@@ -17,7 +17,6 @@
         <img src="img/logo.png" alt="Logo institucional" class="brand__logo">
         <span class="brand__text">Portal de Videos Instructivos</span>
       </a>
-      <a class="topbar__link" href="paginas/acerca.html">Acerca</a>
     </nav>
 
     <section class="intro">
@@ -25,40 +24,41 @@
         <p class="eyebrow">Gestion del conocimiento institucional</p>
         <h1>Instructivos en video para cada perfil de usuario</h1>
         <p class="intro__description">
-          Encuentra rapidamente guias audiovisuales organizadas por rol, area o proceso.
+          Selecciona tu perfil para consultar los instructivos disponibles y filtrar los videos de esa categoria.
         </p>
-        <form class="search" role="search" aria-label="Buscar videos">
-          <label class="sr-only" for="searchInput">Buscar por titulo</label>
-          <input id="searchInput" type="search" placeholder="Buscar video por titulo..." autocomplete="off">
-        </form>
       </div>
       <img class="intro__image" src="img/banner.jpg" alt="Personal institucional revisando instructivos">
     </section>
   </header>
 
   <main class="layout">
-    <aside class="sidebar" aria-labelledby="categoryTitle">
+    <section class="category-panel" aria-labelledby="categoryTitle">
       <div class="sidebar__heading">
-        <h2 id="categoryTitle">Categorias</h2>
+        <h2 id="categoryTitle">Selecciona tu perfil</h2>
         <span id="categoryCounter">0</span>
       </div>
       <div id="categoryList" class="category-list"></div>
-    </aside>
+    </section>
 
     <section class="content" aria-labelledby="videosTitle">
       <div class="content__heading">
         <div>
           <p class="eyebrow">Biblioteca</p>
-          <h2 id="videosTitle">Todos los videos</h2>
+          <h2 id="videosTitle">Elige una categoria para ver videos</h2>
         </div>
         <p id="resultCounter" class="result-counter">0 videos</p>
       </div>
 
+      <form id="searchForm" class="search search--content" role="search" aria-label="Buscar videos" hidden>
+        <label class="sr-only" for="searchInput">Buscar por titulo</label>
+        <input id="searchInput" type="search" placeholder="Filtrar videos por titulo..." autocomplete="off">
+      </form>
+
       <div id="videoGrid" class="video-grid" aria-live="polite"></div>
       <div id="emptyState" class="empty-state" hidden>
         <img src="img/default.jpg" alt="">
-        <h3>No se encontraron videos</h3>
-        <p>Prueba con otro titulo o selecciona una categoria diferente.</p>
+        <h3>Selecciona un perfil</h3>
+        <p>Los videos se mostraran despues de elegir una categoria.</p>
       </div>
     </section>
   </main>
@@ -71,16 +71,21 @@
       <div class="modal__body">
         <h2 id="modalTitle"></h2>
         <p id="modalDescription"></p>
-        <div class="modal__actions">
-          <button class="button button--secondary" type="button" data-close-modal>Regresar al listado</button>
-          <a id="modalPageLink" class="button" href="#">Abrir pagina del video</a>
-        </div>
       </div>
     </article>
   </div>
 
   <script src="js/categorias.js"></script>
   <script src="js/videos.js"></script>
+  <script src="js/datos-videos/jefe-enfermeria.js"></script>
+  <script src="js/datos-videos/auxiliar-enfermeria.js"></script>
+  <script src="js/datos-videos/medico.js"></script>
+  <script src="js/datos-videos/farmacia.js"></script>
+  <script src="js/datos-videos/laboratorio.js"></script>
+  <script src="js/datos-videos/facturacion.js"></script>
+  <script src="js/datos-videos/urgencias.js"></script>
+  <script src="js/datos-videos/sistemas.js"></script>
+  <script src="js/datos-videos/talento-humano.js"></script>
   <script src="js/buscador.js"></script>
   <script src="js/app.js"></script>
 </body>

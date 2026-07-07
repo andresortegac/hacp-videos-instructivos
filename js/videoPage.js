@@ -16,6 +16,18 @@ function obtenerYoutubeEmbed(url) {
   return videoId ? `https://www.youtube.com/embed/${videoId}` : url;
 }
 
+function obtenerTipoVideo(ruta) {
+  const extension = ruta.split(".").pop().toLowerCase();
+  const tipos = {
+    mp4: "video/mp4",
+    webm: "video/webm",
+    ogv: "video/ogg",
+    mkv: "video/x-matroska"
+  };
+
+  return tipos[extension] || "video/mp4";
+}
+
 function crearReproductor(item) {
   const miniatura = `../${item.miniatura}`;
 
@@ -24,8 +36,8 @@ function crearReproductor(item) {
   }
 
   return `
-    <video controls preload="metadata" poster="${miniatura}">
-      <source src="../${item.video}" type="video/mp4">
+    <video controls playsinline preload="metadata" poster="${miniatura}">
+      <source src="../${item.video}" type="${obtenerTipoVideo(item.video)}">
       Tu navegador no soporta la reproduccion de video.
     </video>
   `;

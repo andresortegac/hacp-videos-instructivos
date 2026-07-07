@@ -10,7 +10,7 @@ window.filtrarVideos = function filtrarVideos(videos, categoriaActiva, terminoBu
   const termino = window.normalizarTexto(terminoBusqueda);
 
   return videos
-    .filter((video) => categoriaActiva === "todos" || video.categoria === categoriaActiva)
+    .filter((video) => video.categoria === categoriaActiva)
     .filter((video) => !termino || window.normalizarTexto(video.titulo).includes(termino))
     .sort((a, b) => a.titulo.localeCompare(b.titulo, "es", { sensitivity: "base" }));
 };

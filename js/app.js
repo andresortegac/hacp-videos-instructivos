@@ -1,11 +1,16 @@
 const state = {
-  categoria: new URLSearchParams(window.location.search).get("categoria") || "todos",
+  categoria: new URLSearchParams(window.location.search).get("categoria") || "",
   busqueda: ""
 };
+
+if (!window.obtenerCategoria(state.categoria)) {
+  state.categoria = "";
+}
 
 const els = {
   categoryList: document.querySelector("#categoryList"),
   categoryCounter: document.querySelector("#categoryCounter"),
+  searchForm: document.querySelector("#searchForm"),
   searchInput: document.querySelector("#searchInput"),
   videoGrid: document.querySelector("#videoGrid"),
   emptyState: document.querySelector("#emptyState"),
@@ -14,8 +19,7 @@ const els = {
   modal: document.querySelector("#videoModal"),
   modalPlayer: document.querySelector("#modalPlayer"),
   modalTitle: document.querySelector("#modalTitle"),
-  modalDescription: document.querySelector("#modalDescription"),
-  modalPageLink: document.querySelector("#modalPageLink")
+  modalDescription: document.querySelector("#modalDescription")
 };
 
 function contarVideosPorCategoria(categoriaId) {
@@ -23,13 +27,10 @@ function contarVideosPorCategoria(categoriaId) {
 }
 
 function renderCategorias() {
-  const botones = [
-    { id: "todos", nombre: "Todos", total: window.videos.length },
-    ...window.categorias.map((categoria) => ({
+  const botones = window.categorias.map((categoria) => ({
       ...categoria,
       total: contarVideosPorCategoria(categoria.id)
-    }))
-  ];
+    }));
 
   els.categoryCounter.textContent = window.categorias.length;
   els.categoryList.innerHTML = botones.map((categoria) => `
@@ -56,19 +57,36 @@ function crearVideoCard(video) {
 }
 
 function renderVideos() {
+  if (!state.categoria) {
+    els.videosTitle.textContent = "Elige una categoria para ver videos";
+    els.resultCounter.textContent = "0 videos";
+    els.videoGrid.innerHTML = "";
+    els.emptyState.querySelector("h3").textContent = "Selecciona un perfil";
+    els.emptyState.querySelector("p").textContent = "Los videos se mostraran despues de elegir una categoria.";
+    els.emptyState.hidden = false;
+    els.searchForm.hidden = true;
+    return;
+  }
+
   const resultados = window.filtrarVideos(window.videos, state.categoria, state.busqueda);
   const categoria = window.obtenerCategoria(state.categoria);
 
-  els.videosTitle.textContent = state.categoria === "todos" ? "Todos los videos" : categoria?.nombre || "Videos";
+  els.videosTitle.textContent = categoria?.nombre || "Videos";
   els.resultCounter.textContent = `${resultados.length} ${resultados.length === 1 ? "video" : "videos"}`;
   els.videoGrid.innerHTML = resultados.map(crearVideoCard).join("");
+  els.searchForm.hidden = false;
   els.emptyState.hidden = resultados.length > 0;
+
+  if (resultados.length === 0) {
+    els.emptyState.querySelector("h3").textContent = "No se encontraron videos";
+    els.emptyState.querySelector("p").textContent = "Prueba con otro titulo dentro del perfil seleccionado.";
+  }
 }
 
 function actualizarUrlCategoria() {
   const url = new URL(window.location.href);
 
-  if (state.categoria === "todos") {
+  if (!state.categoria) {
     url.searchParams.delete("categoria");
   } else {
     url.searchParams.set("categoria", state.categoria);
@@ -91,14 +109,26 @@ function obtenerYoutubeEmbed(url) {
   return videoId ? `https://www.youtube.com/embed/${videoId}` : url;
 }
 
+function obtenerTipoVideo(ruta) {
+  const extension = ruta.split(".").pop().toLowerCase();
+  const tipos = {
+    mp4: "video/mp4",
+    webm: "video/webm",
+    ogv: "video/ogg",
+    mkv: "video/x-matroska"
+  };
+
+  return tipos[extension] || "video/mp4";
+}
+
 function crearReproductor(video) {
   if (esYoutube(video.video)) {
     return `<iframe src="${obtenerYoutubeEmbed(video.video)}" title="${video.titulo}" allowfullscreen loading="lazy"></iframe>`;
   }
 
   return `
-    <video controls preload="metadata" poster="${video.miniatura}">
-      <source src="${video.video}" type="video/mp4">
+    <video controls playsinline preload="metadata" poster="${video.miniatura}">
+      <source src="${video.video}" type="${obtenerTipoVideo(video.video)}">
       Tu navegador no soporta la reproduccion de video.
     </video>
   `;
@@ -111,7 +141,6 @@ function abrirModal(videoId) {
   els.modalPlayer.innerHTML = crearReproductor(video);
   els.modalTitle.textContent = video.titulo;
   els.modalDescription.textContent = video.descripcion;
-  els.modalPageLink.href = `paginas/video.html?id=${encodeURIComponent(video.id)}`;
   els.modal.classList.add("is-open");
   els.modal.setAttribute("aria-hidden", "false");
   document.body.classList.add("modal-open");
@@ -129,6 +158,8 @@ els.categoryList.addEventListener("click", (event) => {
   if (!button) return;
 
   state.categoria = button.dataset.category;
+  state.busqueda = "";
+  els.searchInput.value = "";
   renderCategorias();
   renderVideos();
   actualizarUrlCategoria();
