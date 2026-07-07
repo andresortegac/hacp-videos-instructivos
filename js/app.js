@@ -42,14 +42,11 @@ function renderCategorias() {
 }
 
 function crearVideoCard(video) {
-  const categoria = window.obtenerCategoria(video.categoria);
-
   return `
     <article class="video-card">
-      <img src="${video.miniatura}" alt="Miniatura de ${video.titulo}" loading="lazy" onerror="this.src='img/default.jpg'">
       <div class="video-card__body">
-        <p class="video-card__category">${categoria ? categoria.nombre : "Sin categoria"}</p>
         <h3>${video.titulo}</h3>
+        <p class="video-card__description">${video.descripcion}</p>
         <button class="button" type="button" data-video="${video.id}">Ver video</button>
       </div>
     </article>

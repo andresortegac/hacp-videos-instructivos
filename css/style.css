@@ -155,7 +155,7 @@ input {
 }
 
 .layout {
-  width: min(100% - 32px, var(--max-width));
+  width: calc(100% - 64px);
   margin: 32px auto 56px;
   display: grid;
   grid-template-columns: minmax(0, 1fr);
@@ -235,8 +235,8 @@ input {
 
 .video-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 18px;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 14px;
 }
 
 .search--content {
@@ -259,34 +259,36 @@ input {
   box-shadow: 0 16px 34px rgba(22, 32, 51, 0.12);
 }
 
-.video-card img {
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  object-fit: cover;
-  background: #dce6ee;
-}
-
 .video-card__body {
-  min-height: 190px;
-  padding: 16px;
+  min-height: 156px;
+  padding: 14px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
-}
-
-.video-card__category {
-  margin: 0;
-  color: var(--color-primary);
-  font-size: 13px;
-  font-weight: 800;
+  gap: 10px;
 }
 
 .video-card h3 {
   margin: 0;
-  font-size: 19px;
+  font-size: 17px;
   line-height: 1.28;
   letter-spacing: 0;
   overflow-wrap: anywhere;
+}
+
+.video-card__description {
+  margin: 0;
+  color: var(--color-muted);
+  font-size: 14px;
+  line-height: 1.38;
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+.video-card .button {
+  min-height: 38px;
+  padding: 8px 14px;
 }
 
 .button {
