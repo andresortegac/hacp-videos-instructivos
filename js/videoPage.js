@@ -1,6 +1,7 @@
 const detail = document.querySelector("#videoDetail");
 const params = new URLSearchParams(window.location.search);
 const video = window.obtenerVideo(params.get("id"));
+const posterFondo = "../img/poster-fondo.svg";
 
 function esYoutube(url) {
   return url.includes("youtube.com") || url.includes("youtu.be");
@@ -29,14 +30,12 @@ function obtenerTipoVideo(ruta) {
 }
 
 function crearReproductor(item) {
-  const miniatura = `../${item.miniatura}`;
-
   if (esYoutube(item.video)) {
     return `<iframe src="${obtenerYoutubeEmbed(item.video)}" title="${item.titulo}" allowfullscreen loading="lazy"></iframe>`;
   }
 
   return `
-    <video controls playsinline preload="metadata" poster="${miniatura}">
+    <video controls playsinline preload="metadata" poster="${posterFondo}">
       <source src="../${item.video}" type="${obtenerTipoVideo(item.video)}">
       Tu navegador no soporta la reproduccion de video.
     </video>

@@ -259,20 +259,35 @@ input {
   box-shadow: 0 16px 34px rgba(22, 32, 51, 0.12);
 }
 
+.video-card__cover {
+  min-height: 96px;
+  padding: 18px;
+  display: flex;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 100% 0%, rgba(255, 255, 255, 0.32) 0 44px, transparent 45px),
+    radial-gradient(circle at 0% 100%, rgba(255, 255, 255, 0.26) 0 44px, transparent 45px),
+    linear-gradient(135deg, #45a36f 0%, #00809b 100%);
+}
+
+.video-card__cover h3 {
+  position: relative;
+  margin: 0;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
 .video-card__body {
-  min-height: 156px;
+  min-height: 132px;
   padding: 14px;
   display: flex;
   flex-direction: column;
   gap: 10px;
-}
-
-.video-card h3 {
-  margin: 0;
-  font-size: 17px;
-  line-height: 1.28;
-  letter-spacing: 0;
-  overflow-wrap: anywhere;
 }
 
 .video-card__description {

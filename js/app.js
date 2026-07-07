@@ -3,6 +3,8 @@ const state = {
   busqueda: ""
 };
 
+const posterFondo = "img/poster-fondo.svg";
+
 if (!window.obtenerCategoria(state.categoria)) {
   state.categoria = "";
 }
@@ -44,8 +46,10 @@ function renderCategorias() {
 function crearVideoCard(video) {
   return `
     <article class="video-card">
-      <div class="video-card__body">
+      <div class="video-card__cover">
         <h3>${video.titulo}</h3>
+      </div>
+      <div class="video-card__body">
         <p class="video-card__description">${video.descripcion}</p>
         <button class="button" type="button" data-video="${video.id}">Ver video</button>
       </div>
@@ -124,7 +128,7 @@ function crearReproductor(video) {
   }
 
   return `
-    <video controls playsinline preload="metadata" poster="${video.miniatura}">
+    <video controls playsinline preload="metadata" poster="${posterFondo}">
       <source src="${video.video}" type="${obtenerTipoVideo(video.video)}">
       Tu navegador no soporta la reproduccion de video.
     </video>
